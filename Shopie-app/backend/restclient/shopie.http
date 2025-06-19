@@ -1,0 +1,57 @@
+@baseUrl = http://localhost:3000
+
+###CREATE A NEW USER
+POST {{baseUrl}}/users
+Content-Type: application/json
+
+{
+    "name": "Liz Beth",
+    "email": "lizz@gmail.com",
+    "password": "lizz4"
+}
+
+### CREATE A NEW USER(ADMIN)
+POST {{baseUrl}}/users
+Content-Type: application/json
+
+{
+  "name": "Admin",
+  "email": "admin@gmail.com",
+  "password": "admin04",
+  "role": "ADMIN"
+}
+
+###GET ALL USERS
+GET {{baseUrl}}/users
+
+###GET USER BY ID
+GET {{baseUrl}}/users/REPLACE_WITH_USER_ID
+
+###GET BY ROLE
+GET {{baseUrl}}/users/role/CUSTOMER
+
+###GET BY EMAIL
+GET {{baseUrl}}/users/email/cele@gmail.com
+
+###UPDATE USER DATA
+Put {{baseUrl}}/users/REPLACE_WITH_USER_ID
+Content-Type: application/json
+
+{
+    "name": "Joy Lynne",
+    "email": "joy@gmail.com"
+}
+
+###change password
+POST {{baseUrl}}/users/change-password
+Content-Type: application/json
+
+{
+    "userId": "REPLACE_WITH_USER_ID",
+    "new-password": "new23"
+}
+
+###DELETE A USER
+PATCH {{baseUrl}}/users/email/cele@gmail.com
+
+
