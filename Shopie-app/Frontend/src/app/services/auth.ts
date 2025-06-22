@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class AuthService {
-  private baseUrl = 'http://localhost:3000'; // change if different
+  private baseUrl = 'http://localhost:3000';
 
   constructor(private http: HttpClient) {}
 
