@@ -13,10 +13,14 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import * as bcrypt from 'bcrypt';
 import { Role, User as PrismaUser } from 'generated/prisma';
+// import { MailerService } from './../mailer/mailer.service';
 
 @Injectable()
 export class UsersService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    // private readonly mailerService: MailerService,
+  ) {}
 
   private mapPrismaUserToInterface(user: PrismaUser): UserEntity {
     return {
@@ -28,6 +32,17 @@ export class UsersService {
       created_at: user.createdAT,
     };
   }
+
+  // async sendWelcomeEmail(to: string, name: string) {
+  //   await this.mailerService.sendMail({
+  //     to,
+  //     subject: 'Welcome to Shopie!',
+  //     template: './welcome', // corresponds to templates/welcome.hbs
+  //     context: {
+  //       name,
+  //     },
+  //   });
+  // }
 
   async create(data: CreateUserDto): Promise<UserEntity> {
     try {
@@ -41,8 +56,6 @@ export class UsersService {
         );
       }
 
-      console.log('bcrypt:', bcrypt);
-
       const hashedPassword = await bcrypt.hash(data.password, 10);
 
       const user = await this.prisma.user.create({
@@ -53,6 +66,8 @@ export class UsersService {
           role: data.role ?? Role.CUSTOMER,
         },
       });
+
+      // await this.mailerService.sendWelcomeEmail(user.email, user.name);
 
       return this.mapPrismaUserToInterface(user);
     } catch (error) {

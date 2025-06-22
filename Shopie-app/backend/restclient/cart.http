@@ -1,0 +1,31 @@
+@baseUrl = http://localhost:3000
+@productId = 
+@cartId = 
+
+
+### Add Product to Cart
+POST {{baseUrl}}/carts
+Content-Type: application/json
+
+{
+  "userId": "0560c671-2a2d-439e-9ec7-c41ec7e7d6a3",
+  "productId": "a51fd030-6d92-4706-828f-1fbf74fdc6c5",
+  "quantity": 2
+}
+
+### Get All Cart Items
+GET {{baseUrl}}/carts
+
+### Update Cart Item
+PUT {{baseUrl}}/carts/{{cartId}}
+Content-Type: application/json
+
+{
+  "quantity": 3
+}
+
+### Delete Cart Item
+DELETE {{baseUrl}}/carts/{{cartId}}
+
+### Search Cart Items by Product Name
+GET {{baseUrl}}/carts/search?name=headphones

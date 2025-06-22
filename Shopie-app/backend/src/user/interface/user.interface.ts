@@ -8,3 +8,5 @@ export interface User {
   role: Role;
   created_at: Date;
 }
+
+export type PublicUser = Omit<User, 'password'>;

@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   Body,
@@ -16,21 +14,29 @@ import {
   Put,
   ForbiddenException,
   BadRequestException,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import { UsersService } from './user.service';
 import { User } from './interface/user.interface';
+import { PublicUser } from './interface/user.interface';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { ApiResponse } from 'src/shared-response/api-response.interface';
+import { ApiResponse as ApiResult } from '../shared-response/api-response.interface';
 import { Role } from 'generated/prisma';
+import { Roles } from 'src/auth/decorator/public.decorator';
+import { ApiTags, ApiResponse } from '@nestjs/swagger';
+import { Public } from '../auth/decorator/public.decorator';
 
+@ApiTags('users')
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
+  @Public()
   @Post()
+  @ApiResponse({ status: 201, description: 'User created successfully' })
   @HttpCode(HttpStatus.CREATED)
-  async create(@Body() data: CreateUserDto): Promise<ApiResponse<User>> {
+  async create(@Body() data: CreateUserDto): Promise<ApiResult<User>> {
     try {
       const user = await this.usersService.create(data);
       return {
@@ -47,30 +53,20 @@ export class UsersController {
     }
   }
 
+  @Public()
+  @ApiTags('users')
+  @ApiResponse({ status: 200, description: 'Get all users' })
   @Get()
-  findAll() {
-    return this.usersService.findAll();
-  }
-
-  @Get('role/:role')
-  async findByRole(@Query('role') role?: Role): Promise<ApiResponse<User[]>> {
+  async findAll(@Query('role') role?: Role): Promise<ApiResult<PublicUser[]>> {
     try {
-      let users: User[];
+      const users = role
+        ? await this.usersService.findByRole(role)
+        : await this.usersService.findAll();
 
-      if (role) {
-        users = await this.usersService.findByRole(role);
-      } else {
-        users = await this.usersService.findAll();
-      }
-
-      const usersWithoutPasswords = users.map((user) => {
-        const { password, ...userWithoutPassword } = user;
-        return userWithoutPassword as User;
-      });
-
+      const usersWithoutPasswords = users.map(({ password, ...rest }) => rest);
       return {
         sucess: true,
-        message: `Retrieved ${users.length} users`,
+        message: 'All users retrieved successfully',
         data: usersWithoutPasswords,
       };
     } catch (error) {
@@ -83,10 +79,11 @@ export class UsersController {
   }
 
   //Get user by ID
+  @Public()
   @Get(':id')
   async findOne(
-    @Param('id', ParseIntPipe) id: string,
-  ): Promise<ApiResponse<User>> {
+    @Param('id', new ParseUUIDPipe()) id: string,
+  ): Promise<ApiResult<PublicUser>> {
     try {
       const user = await this.usersService.findOne(id);
       const { password, ...userWithoutPassword } = user;
@@ -105,17 +102,36 @@ export class UsersController {
   }
 
   //Get user by email
+  @Public()
+  @Roles(Role.ADMIN)
   @Get('email/:email')
-  findByEmail(@Param('email') email: string) {
-    return this.usersService.findByEmail(email);
+  async findByEmail(
+    @Param('email') email: string,
+  ): Promise<ApiResult<PublicUser>> {
+    try {
+      const user = await this.usersService.findByEmail(email);
+      const { password, ...userWithoutPassword } = user;
+      return {
+        sucess: true,
+        message: 'User found',
+        data: userWithoutPassword,
+      };
+    } catch (error) {
+      return {
+        sucess: false,
+        message: 'User not found',
+        error: error instanceof Error ? error.message : 'Unknown error',
+      };
+    }
   }
 
+  @Public()
   @Put(':id')
   @HttpCode(HttpStatus.OK)
   async update(
     @Param('id') id: string,
     @Body() updateUserDto: UpdateUserDto,
-  ): Promise<ApiResponse<User>> {
+  ): Promise<ApiResult<PublicUser>> {
     try {
       if (updateUserDto.role) {
         if (updateUserDto.role !== Role.ADMIN) {
@@ -146,9 +162,10 @@ export class UsersController {
     }
   }
 
+  @Public()
   @Delete(':id')
   @HttpCode(HttpStatus.OK)
-  async remove(@Param('id') id: string): Promise<ApiResponse<void>> {
+  async remove(@Param('id') id: string): Promise<ApiResult<void>> {
     try {
       await this.usersService.delete(id);
       return {

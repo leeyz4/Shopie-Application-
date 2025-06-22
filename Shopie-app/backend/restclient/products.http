@@ -1,0 +1,39 @@
+@baseUrl = http://localhost:3000
+@productId = 
+
+
+### Create Product
+POST {{baseUrl}}/products
+Content-Type: application/json
+
+{
+  "name": "Wireless Headphones",
+  "description": "High-quality sound",
+  "price": 99.99,
+  "imageUrl": "https://example.com/images/headphones.jpg",
+  "stock": 25
+}
+
+### Get All Products
+GET {{baseUrl}}/products
+
+### Get Product by ID
+GET {{baseUrl}}/products/8cc7dfb1-3bf8-4afa-b9b2-1d960d4ffcac
+
+### Search Products by Name
+GET {{baseUrl}}/products/search?name=headphones
+
+### Update Product by ID
+PUT {{baseUrl}}/products/8cc7dfb1-3bf8-4afa-b9b2-1d960d4ffcac
+Content-Type: application/json
+
+{
+  "name": "Wireless Headphones",
+  "description": "Updated noise-cancelling headphones",
+  "price": 89.99,
+  "imageUrl": "https://example.com/images/headphones-new.jpg",
+  "stock": 20
+}
+
+### Delete Product
+DELETE {{baseUrl}}/products/8cc7dfb1-3bf8-4afa-b9b2-1d960d4ffcac
