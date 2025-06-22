@@ -1,0 +1,39 @@
+<p>login works!</p>
+<div class="login-container">
+  <h2>Login to Shopie</h2>
+
+  <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
+    <div class="form-group">
+      <label for="email">Email:</label>
+      <input
+        type="email"
+        id="email"
+        name="email"
+        required
+        [(ngModel)]="loginData.email"
+        class="form-control"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="password">Password:</label>
+      <input
+        type="password"
+        id="password"
+        name="password"
+        required
+        [(ngModel)]="loginData.password"
+        class="form-control"
+      />
+    </div>
+
+    <button type="submit" [disabled]="loginForm.invalid">Login</button>
+
+    <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+
+    <div class="extra-links">
+      <a routerLink="/forgot-password">Forgot Password?</a> |
+      <a routerLink="/register">Register</a>
+    </div>
+  </form>
+</div>

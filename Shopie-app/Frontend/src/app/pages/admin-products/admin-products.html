@@ -1,0 +1,18 @@
+<p>admin-products works!</p>
+<div class="admin-products">
+    <h2>Manage Products</h2>
+  
+    <button routerLink="/admin/products/add">Add New Product</button>
+  
+    <div *ngIf="products.length === 0">No products found.</div>
+  
+    <div *ngFor="let product of products" class="product-card">
+      <h3>{{ product.name }}</h3>
+      <p>{{ product.description }}</p>
+      <p>Price: KES {{ product.price }}</p>
+      <p>Stock: {{ product.stock }}</p>
+  
+      <button [routerLink]="['/admin/products/edit', product.id]">Edit</button>
+      <button (click)="deleteProduct(product.id)">Delete</button>
+    </div>
+  </div>
