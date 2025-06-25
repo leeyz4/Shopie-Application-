@@ -57,6 +57,14 @@ export class AuthService {
       role: user.role,
     };
 
-    return this.jwtService.sign(payload);
+    const token = this.jwtService.sign(payload);
+    return {
+      token,
+      user: {
+        id: user.id,
+        email: user.email,
+        role: user.role,
+      },
+    };
   }
 }

@@ -1,0 +1,53 @@
+.home-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.hero {
+  background: #e0e7ff;
+  border-radius: 12px;
+  padding: 40px;
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.hero h1 {
+  font-size: 2.5rem;
+  color: #1e293b;
+  margin-bottom: 16px;
+}
+
+.hero p {
+  font-size: 1.25rem;
+  color: #475569;
+  margin-bottom: 24px;
+}
+
+.shop-button {
+  display: inline-block;
+  background: #4f46e5;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background-color 0.3s;
+}
+
+.shop-button:hover {
+  background: #4338ca;
+}
+
+.featured-products h2 {
+  font-size: 1.75rem;
+  color: #1e293b;
+  margin-bottom: 24px;
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+}
+

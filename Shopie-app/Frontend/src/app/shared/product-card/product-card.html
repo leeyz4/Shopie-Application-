@@ -1,0 +1,18 @@
+<div class="product-card">
+    <div class="product-image">
+      <img [src]="product.image" [alt]="product.name">
+    </div>
+    <div class="product-details">
+      <h3 class="product-name">{{product.name}}</h3>
+      <div class="product-rating">
+        <span class="stars">{{generateStars(product.rating)}}</span>
+        <span class="review-count">({{product.reviewCount}} reviews)</span>
+      </div>
+      <div class="product-footer">
+        <span class="price">${{product.price}}</span>
+        <button class="add-to-cart" (click)="addToCart()">
+          <span class="material-icons">add</span>
+        </button>
+      </div>
+    </div>
+  </div>

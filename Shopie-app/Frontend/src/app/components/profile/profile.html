@@ -1,0 +1,58 @@
+<!-- <p>profile works!</p> -->
+<div class="profile-page">
+    <div class="profile-header">
+      <h1>My Account</h1>
+      <button class="logout-button" (click)="logout()">Logout</button>
+    </div>
+  
+    <div class="profile-content">
+      <!-- User Info Section -->
+      <div class="profile-card">
+        <h2>Personal Information</h2>
+        <div class="user-info">
+          <div class="info-row">
+            <span class="info-label">Name:</span>
+            <span *ngIf="!editMode" class="info-value">{{ user?.name }}</span>
+            <input *ngIf="editMode" [(ngModel)]="updatedUser.name" class="info-input">
+          </div>
+          <div class="info-row">
+            <span class="info-label">Email:</span>
+            <span *ngIf="!editMode" class="info-value">{{ user?.email }}</span>
+            <input *ngIf="editMode" [(ngModel)]="updatedUser.email" class="info-input">
+          </div>
+          <div class="info-row">
+            <span class="info-label">Member Since:</span>
+            <span class="info-value">{{ user?.createdAt | date }}</span>
+          </div>
+        </div>
+        <div class="action-buttons">
+          <button *ngIf="!editMode" class="edit-button" (click)="toggleEditMode()">Edit Profile</button>
+          <div *ngIf="editMode" class="edit-actions">
+            <button class="save-button" (click)="updateProfile()">Save Changes</button>
+            <button class="cancel-button" (click)="toggleEditMode()">Cancel</button>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Order History Section -->
+      <div class="orders-card">
+        <h2>Order History</h2>
+        <div *ngIf="orders.length > 0; else noOrders" class="orders-list">
+          <div *ngFor="let order of orders" class="order-item">
+            <div class="order-header">
+              <span class="order-id">Order #{{ order.id.slice(0, 8) }}</span>
+              <span class="order-date">{{ order.date | date }}</span>
+            </div>
+            <div class="order-status" [class.completed]="order.status === 'completed'">
+              {{ order.status | titlecase }}
+            </div>
+            <div class="order-total">Total: ${{ order.total.toFixed(2) }}</div>
+          </div>
+        </div>
+        <ng-template #noOrders>
+          <p class="no-orders">You haven't placed any orders yet.</p>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+  

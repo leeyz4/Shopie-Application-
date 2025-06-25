@@ -6,9 +6,9 @@ POST {{baseUrl}}/users
 Content-Type: application/json
 
 {
-  "name": "Liz Beth",
-  "email": "liz2@gmail.com",
-  "password": "lizz04"
+  "name": "Prudence lynne",
+  "email": "prud@gmail.com",
+  "password": "lynn50"
 }
 
 ### Create Admin
@@ -26,7 +26,7 @@ Content-Type: application/json
 GET {{baseUrl}}/users
 
 ### Get User by ID
-GET {{baseUrl}}/users/786f71e3-dc4b-41de-80a6-338c66937744
+GET {{baseUrl}}/users/f1f8526e-b93f-4a39-a69d-94cb45351709
 
 ### Get Users by Role
 GET {{baseUrl}}/users/role/CUSTOMER
@@ -35,12 +35,12 @@ GET {{baseUrl}}/users/role/CUSTOMER
 GET {{baseUrl}}/users/email/cele@gmail.com
 
 ### Update User Info
-PUT {{baseUrl}}/users/786f71e3-dc4b-41de-80a6-338c66937744
+PUT {{baseUrl}}/users/f1f8526e-b93f-4a39-a69d-94cb45351709
 Content-Type: application/json
 
 {
-  "name": "Joy Lynne",
-  "email": "joy@gmail.com"
+  "name": "Patience Lynne",
+  "email": "pat@gmail.com"
 }
 
 ### Change Password

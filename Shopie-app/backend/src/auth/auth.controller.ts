@@ -28,11 +28,12 @@ export class AuthController {
   @Post('login')
   @HttpCode(HttpStatus.OK)
   async login(@Body() dto: LoginDto) {
-    const token = await this.authService.login(dto);
+    const { token, user } = await this.authService.login(dto);
     return {
       success: true,
       message: 'Login successful',
       token,
+      user,
     };
   }
   //admin only access

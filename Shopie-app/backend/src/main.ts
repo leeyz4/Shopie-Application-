@@ -7,16 +7,23 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  // Enable CORS
+  app.enableCors({
+    origin: 'http://localhost:4200',
+    methods: 'CREATE,GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+  });
+
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
   const reflector = app.get(Reflector);
   app.useGlobalGuards(new jwtAuthGuard(reflector));
 
-  //swagger configuration
+  // Swagger config
   const config = new DocumentBuilder()
     .setTitle('Shopie App')
     .setDescription('API documentation for the Shopie app')
     .setVersion('1.0')
-    .addBearerAuth() //enables jwt auth support
+    .addBearerAuth() // Enables JWT auth support
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
